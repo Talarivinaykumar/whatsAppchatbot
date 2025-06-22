@@ -25,6 +25,10 @@ public class WebhookController {
     @Value("${whatsapp.verify-token}")
     private String verifyToken;
 
+    @GetMapping("/")
+    public String home() {
+        return "WhatsApp Chatbot is running!";
+    }
     @PostMapping
     public ResponseEntity<String> receiveMessage(@RequestBody String payload) {
         try {
