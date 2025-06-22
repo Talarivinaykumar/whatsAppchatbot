@@ -2,11 +2,14 @@
 FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 
-# Copy the Maven wrapper and project files
+# Copy Maven wrapper and project files
 COPY .mvn .mvn
 COPY mvnw .
 COPY pom.xml .
 COPY src ./src
+
+# Make Maven wrapper executable
+RUN chmod +x mvnw
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
@@ -18,8 +21,8 @@ WORKDIR /app
 # Copy built JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose Spring Boot default port
+# Expose default Spring Boot port
 EXPOSE 8080
 
-# Run the app
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
